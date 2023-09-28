@@ -27,7 +27,7 @@ jobs:
         run: mkdir -p testResults
 
       - name: Run POSTMAN collection
-        run: newman run Serverest-API.postman_collection.json -e Serverest.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+        run: newman run Serverest-API.postman_collection.json -e Serverest.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/index.html
 
       - name: Upload test results
         if: always()
