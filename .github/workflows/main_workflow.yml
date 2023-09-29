@@ -44,3 +44,11 @@ jobs:
           publish_branch: gh-pages
           publish_dir: testResults
           keep_files: true
+
+      - name: Send slack notification with Status of the job
+        if: always()
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
