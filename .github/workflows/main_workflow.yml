@@ -45,20 +45,20 @@ jobs:
           publish_dir: testResults
           keep_files: true
 
-      # - name: Slack notification
-      #   if: always()
-      #   uses: ravsamhq/notify-slack-action@v2
-      #   with:
-      #     notification_title: "{workflow} has {status_message}"
-      #     message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
-      #     status: ${{ job.status }}
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Slack Notification
+      - name: Slack notification
         if: always()
-        uses: act10ns/slack@v1
+        uses: ravsamhq/notify-slack-action@v2
         with:
-          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>. Check here: ${{ secrets.REPORT_PAGE }}"
           status: ${{ job.status }}
-          message: Test Report - ${{ secrets.REPORT_PAGE }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      # - name: Slack Notification
+      #   if: always()
+      #   uses: act10ns/slack@v1
+      #   with:
+      #     webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     status: ${{ job.status }}
+      #     message: Test Report - ${{ secrets.REPORT_PAGE }}
