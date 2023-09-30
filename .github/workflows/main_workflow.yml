@@ -41,17 +41,24 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: Test Report - ${{ secrets.REPORT_PAGE }}
           publish_branch: gh-pages
           publish_dir: testResults
           keep_files: true
 
-      - name: Slack notification
+      # - name: Slack notification
+      #   if: always()
+      #   uses: ravsamhq/notify-slack-action@v2
+      #   with:
+      #     notification_title: "{workflow} has {status_message}"
+      #     message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+      #     status: ${{ job.status }}
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Slack Notification
         if: always()
-        uses: ravsamhq/notify-slack-action@v2
+        uses: act10ns/slack@v1
         with:
-          notification_title: "{workflow} has {status_message}"
-          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           status: ${{ job.status }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          message: Test Report - ${{ secrets.REPORT_PAGE }}
