@@ -49,6 +49,8 @@ jobs:
         if: always()
         uses: ravsamhq/notify-slack-action@v2
         with:
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
           status: ${{ job.status }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
