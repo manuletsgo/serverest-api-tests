@@ -41,6 +41,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: Test Report - {{ secrets.REPORT_PAGE }}
           publish_branch: gh-pages
           publish_dir: testResults
           keep_files: true
@@ -54,4 +55,3 @@ jobs:
           status: ${{ job.status }}
         env:
           REPORT_PAGE: ${{ secrets.REPORT_PAGE }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
