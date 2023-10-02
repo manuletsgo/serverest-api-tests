@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'main'
+  pull_requests:
+    branches:
+      - 'main'
 
 jobs:
   test-api:
@@ -26,9 +29,9 @@ jobs:
       - name: Make Directory for results
         run: mkdir -p testResults
 
-      - name: Run POSTMAN collection
+      - name: Run Postman Tests
         id: api-tests
-        run: newman run Serverest-API.postman_collection.json -e Serverest.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/index.html
+        run: newman run tests/Serverest-API.postman_collection.json -e tests/Serverest.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/index.html
 
       - name: Upload test results
         id: upload-tests-results
@@ -65,7 +68,6 @@ jobs:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
           message: Test Report - ${{ secrets.REPORT_PAGE }}
-          config: .github/workflows/slack.yml
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         
