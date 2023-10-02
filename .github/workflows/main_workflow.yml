@@ -27,9 +27,11 @@ jobs:
         run: mkdir -p testResults
 
       - name: Run POSTMAN collection
+        id: API Tests
         run: newman run Serverest-API.postman_collection.json -e Serverest.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/index.html
 
       - name: Upload test results
+        id: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
         with:
@@ -37,6 +39,7 @@ jobs:
           path: testResults
 
       - name: Deploy report to Github Pages
+        id: Deploy report
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -45,20 +48,24 @@ jobs:
           publish_dir: testResults
           keep_files: true
 
-      - name: Slack notification
+      # - name: Slack notification
+      #   if: always()
+      #   uses: ravsamhq/notify-slack-action@v2
+      #   with:
+      #     notification_title: "{workflow} has {status_message}"
+      #     message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>. Check here: ${{ secrets.REPORT_PAGE }}"
+      #     status: ${{ job.status }}
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Slack Notification
         if: always()
-        uses: ravsamhq/notify-slack-action@v2
+        uses: act10ns/slack@v1
         with:
-          notification_title: "{workflow} has {status_message}"
-          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>. Check here: ${{ secrets.REPORT_PAGE }}"
           status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          message: Test Report - ${{ secrets.REPORT_PAGE }}
+          config: tests/fixtures/slack-blocks.yml
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      # - name: Slack Notification
-      #   if: always()
-      #   uses: act10ns/slack@v1
-      #   with:
-      #     webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #     status: ${{ job.status }}
-      #     message: Test Report - ${{ secrets.REPORT_PAGE }}
+        
