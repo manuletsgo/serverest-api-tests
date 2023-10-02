@@ -65,6 +65,7 @@ jobs:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
           message: Test Report - ${{ secrets.REPORT_PAGE }}
+          config: .github/workflows/slack.yml
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         
