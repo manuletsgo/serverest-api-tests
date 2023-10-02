@@ -27,11 +27,11 @@ jobs:
         run: mkdir -p testResults
 
       - name: Run POSTMAN collection
-        id: API Tests
+        id: api-tests
         run: newman run Serverest-API.postman_collection.json -e Serverest.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/index.html
 
       - name: Upload test results
-        id: Upload test results
+        id: upload-tests-results
         if: always()
         uses: actions/upload-artifact@v3
         with:
@@ -39,7 +39,7 @@ jobs:
           path: testResults
 
       - name: Deploy report to Github Pages
-        id: Deploy report
+        id: deploy-report
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
